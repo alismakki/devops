@@ -1,0 +1,23 @@
+trigger: none
+schedules:
+  - cron: "0 0 * * *"
+    displayName: Daily midnight run
+    branches:
+      include:
+      - main
+    always: true
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install requests
+    python create_user_stories.py
+  displayName: 'Run Python Script'
